@@ -9,6 +9,13 @@ function getUsers(req, res, next) {
         })
 }
 
+function getUser(req, res, next) {
+    userModel.getUser(req.params.id)
+        .then(client => res.json(client))
+        .catch(err => res.sendStatus(500))
+}
+
 module.exports = {
     getUsers,
+    getUser
 }
