@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 
 export default function App() {
     const [clients, setClients] = useState([]);
