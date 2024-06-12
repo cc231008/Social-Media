@@ -1,5 +1,9 @@
 import './App.css';
 import {useEffect, useState} from "react";
+import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
+import Profile from "./pages/Profile";
+import Home from "./pages/Home";
+import Login from "./components/Login";
 
 export default function App() {
     const [clients, setClients] = useState([]);
@@ -17,23 +21,25 @@ export default function App() {
     useEffect(() => {
         getData();
     },[]);
-  return (
-      <div>
-        <header>
-          <h1>My React App</h1>
-        </header>
-              {clients?.length > 0 ? (
-                  clients.map(client => <div key={client.id}>
-                        <h2>{client.name}</h2>
-                      <p>{client.surname}</p>
-                        <p>{client.email}</p>
-                      <p>{client.username}</p>
-                      image: <img src={client.avatar} alt={client.name} />
-                  </div>)
-              ) : (
-                  <p>No clients found</p>
-              )}
-      </div>
-  );
+
+
+    return (
+<div className="App">
+            <Router>
+                <Routes>
+                    <Route path="/" element={<LoginWrapper clients={clients} />} />
+                    <Route path="/home" element={<Home clients={clients} />} />
+                    <Route path="/clients/:id" element={<Profile clients={clients} />} />
+                </Routes>
+            </Router>
+        </div>
+    )
 }
+
+function LoginWrapper({ clients, client }) {
+    const navigate = useNavigate();
+    return <Login clients={clients} client={client} navigate={navigate} />;
+}
+
+
 
