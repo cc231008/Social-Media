@@ -1,18 +1,32 @@
 import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 
-export default function Profile({ clients }) {
+export default function Profile() {
     const { id } = useParams();
-    const client = clients.find(client => client.id === parseInt(id));
-    if (!client) {
-        return <h1>Client not found</h1>;
-}
+    const [client, setClient] = useState({});
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const response = await fetch(`http://localhost:2999/users/${id}`);
+                const result = await response.json();
+                console.log(result)
+                setClient(result);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getData();
+    },[id]);
+
 
     return (
         <div>
             <h1>{client.name} {client.surname}</h1>
-            <img src={client.avatar} alt={client.name} />
+            <img id="picture" src={client.avatar} alt={client.name} />
             <p>{client.email}</p>
             <p>{client.username}</p>
+            <p>{client.bio}</p>
         </div>
     );
 };
