@@ -38,8 +38,20 @@ let registerUser = (userData) => new Promise(async (resolve, reject) => {
     })
 })
 
+let deleteUser = (id) => new Promise((resolve, reject)=>{
+    let sql = `DELETE FROM client WHERE client.id = ${id}`;
+    db.query(sql, function(err, result, fields){
+        if(err){
+            reject(err)
+        }
+        console.log(result.affectedRows + " rows have been affected")
+        resolve({result})
+    })
+})
+
 module.exports = {
     getUsers,
     getUser,
-    registerUser
+    registerUser,
+    deleteUser
 };

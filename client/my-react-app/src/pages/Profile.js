@@ -1,5 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import DeleteUser from "../components/DeleteUserButton";
 
 export default function Profile() {
     const { id } = useParams();
@@ -27,6 +28,7 @@ export default function Profile() {
             <p>{client.email}</p>
             <p>{client.username}</p>
             <p>{client.bio}</p>
+            <DeleteUser id={id} />
         </div>
     );
 };

@@ -21,8 +21,15 @@ function registerUser(req, res, next) {
         .catch(err => res.sendStatus(500))
 }
 
+function deleteUser(req, res, next) {
+    userModel.deleteUser(req.params.id)
+        .then(client => res.json(client))
+        .catch(err => res.sendStatus(500))
+}
+
 module.exports = {
     getUsers,
     getUser,
-    registerUser
+    registerUser,
+    deleteUser
 }
