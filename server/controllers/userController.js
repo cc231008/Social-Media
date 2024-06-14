@@ -15,6 +15,12 @@ function getUser(req, res, next) {
         .catch(err => res.sendStatus(500))
 }
 
+function loginUser(req, res, next) {
+    userModel.getUsers(req.body)
+        .then(client => res.json(client))
+        .catch(err => res.sendStatus(500))
+}
+
 function registerUser(req, res, next) {
     userModel.registerUser(req.body)
         .then(client => res.json(client))
@@ -30,6 +36,7 @@ function deleteUser(req, res, next) {
 module.exports = {
     getUsers,
     getUser,
+    loginUser,
     registerUser,
     deleteUser
 }
