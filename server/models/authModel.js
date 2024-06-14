@@ -82,7 +82,8 @@ let loginUser = (userData) => new Promise(async (resolve, reject) => {
                             name: user.name,
                             email: user.email
                         }, process.env.ACCESS_TOKEN_SECRET);
-                        return resolve({user, token: accessToken});
+                        //store token in cookie
+                        return resolve({client: user, token: accessToken});
                     } catch (error) {
                         console.error('JWT error:', error)
                         return reject(error)
