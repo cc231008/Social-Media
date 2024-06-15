@@ -30,7 +30,7 @@ export default function App() {
             <Router>
                 <Suspense fallback={<Loading />}>
                 <Routes>
-                    <Route path="/" element={<LoginWrapper clients={clients} />} />
+                    <Route path="/" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/home" element={<Home clients={clients} />} />
                     <Route path="/clients/:id" element={<Profile />} />
@@ -41,10 +41,6 @@ export default function App() {
     )
 }
 
-function LoginWrapper({ clients, client }) {
-    const navigate = useNavigate();
-    return <Login clients={clients} client={client} navigate={navigate} />;
-}
 
 
 

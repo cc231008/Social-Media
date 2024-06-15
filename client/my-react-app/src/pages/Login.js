@@ -1,13 +1,49 @@
 import {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-export default function Login({ clients, navigate }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+export default function Login() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const client = clients.find(client => client.email === email && client.password === password);
+    const [message, setMessage] = useState('');
+
+    const navigate = useNavigate();
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            const response = await fetch('http://localhost:2999/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+                credentials: 'include'
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage('Login successful!');
+                console.log('User logged in:', data);
+                navigate(`/clients/${data.id}`);
+                // Redirect or navigate to protected page
+            } else {
+                setMessage('Login failed: ' + data.error);
+            }
+
+        } catch (error) {
+            setMessage('An error occurred: ' + error.message);
+        }
+    }
+
+
+        /*
         console.log(client);
         if (client) {
             navigate(`/clients/${client.id}`);
@@ -15,33 +51,34 @@ export default function Login({ clients, navigate }) {
             alert('Invalid email or password')
         }
     }
+         */
 
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Email:
+        return (
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <label> Email: </label>
                     <input
-                        type="text"
-                        placeholder="type..."
+                        type="email"
                         name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Password:
-                    <input
-                        type="text"
                         placeholder="type..."
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
                     />
-                </label>
-                <button type="submit">Login</button>
-            </form>
-            <Link to="/register"> Register</Link>
-        </div>
-    );
+
+                    <label>Password:</label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+
+                    <button type="submit">Login</button>
+                </form>
+                <p>{message}</p>
+                <Link to="/register"> Register</Link>
+            </div>
+        );
 }
