@@ -13,26 +13,22 @@ export default function Register() {
     async function handleRegister(e) {
         e.preventDefault();
         try {
-        const response = await fetch('http://localhost:2999/users/register', {
+        const response = await fetch('http://localhost:2999/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                name: name,
-                surname: surname,
-                email: email,
-                username: username,
-                bio: bio,
-                avatar: avatar,
-                password: password
-            }),
+            body: JSON.stringify({ name, surname, email, username, bio, avatar, password }),
         });
 
         const data = await response.json();
         console.log(data);
-        if (data.id) {
+
+        if (response.ok) {
             navigate(`/clients/${data.id}`);
+        }
+        else {
+            console.error("Error", data);
         }
     }
     catch (error) {

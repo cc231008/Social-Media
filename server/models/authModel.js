@@ -19,6 +19,7 @@ let registerUser = (userData) => new Promise(async (resolve, reject) => {
         //hash password
          let hashedPassword = await bcrypt.hash(userData.password, 10);
 
+        //add new user into database
         let sql = `INSERT INTO client (name, surname, username, email, bio, avatar, password) VALUES (` +
             db.escape(userData.name) + `, ` +
             db.escape(userData.surname) + `, ` +
