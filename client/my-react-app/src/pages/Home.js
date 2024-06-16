@@ -1,21 +1,34 @@
-import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
 
-export default function Home({ clients }) {
+export default function Home({ client }) {
+    const [posts, setPosts] = useState([])
+
+    let fetchPosts = async () => {
+        try {
+            const response = await fetch('http://localhost:2999/posts/');
+            const data = await response.json();
+            console.log(data);
+            setPosts(data);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchPosts();
+    },[]);
+
 
     return (
         <div>
-            <header>
-                <h1>My React App</h1>
-            </header>
-            {clients?.length > 0 ? (
-                clients.map(client => <div key={client.id}>
-                    <p>{client.name}</p>
-                    <p>{client.email}</p>
-                    <Link to={`/clients/${client.id}`}>User's Profile</Link>
-                </div>)
-            ) : (
-                <p>No clients found</p>
-            )}
+            <h1>Home</h1>
+                {posts.map((post) => (
+                    <div key={post.id}>
+                        <img id="postImage" src={post.imgPost} alt="Alps" />
+                        <p>{post.description}</p>
+                    </div>
+                ))}
         </div>
     );
 }

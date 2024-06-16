@@ -1,6 +1,6 @@
 import './App.css';
-import {Suspense, useEffect, useState} from "react";
-import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
+import {Suspense} from "react";
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -9,6 +9,7 @@ import Loading from "./pages/Loading";
 import Edit from "./pages/Edit";
 
 export default function App() {
+    /*
     const [clients, setClients] = useState([]);
 
     const getData = async () => {
@@ -25,6 +26,8 @@ export default function App() {
         getData();
     },[]);
 
+     */
+
 
     return (
 <div className="App">
@@ -33,7 +36,7 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/home" element={<Home clients={clients} />} />
+                    <Route path="/home" element={<Home />} />
                     <Route path="/clients/:id" element={<Profile />} />
                     <Route path="/edit/:id" element={<Edit />} />
                 </Routes>

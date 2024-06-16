@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const usersRouter = require('./routes/users.js');
 const authRouter = require('./routes/auth.js');
+const postsRouter = require('./routes/posts.js');
 const db = require('./services/database.js');
 
 
@@ -18,6 +19,7 @@ app.use(cors({
 app.use(cookieParser());
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
 
 
 //send a json object to the client
