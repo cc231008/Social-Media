@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Loading from "./pages/Loading";
+import Edit from "./pages/Edit";
 
 export default function App() {
     const [clients, setClients] = useState([]);
@@ -34,6 +35,7 @@ export default function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/home" element={<Home clients={clients} />} />
                     <Route path="/clients/:id" element={<Profile />} />
+                    <Route path="/edit/:id" element={<Edit />} />
                 </Routes>
                 </Suspense>
             </Router>

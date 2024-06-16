@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import DeleteUser from "../components/DeleteUserButton";
 
@@ -29,6 +29,7 @@ export default function Profile() {
             <p>{client.username}</p>
             <p>{client.bio}</p>
             <DeleteUser id={id} />
+            <Link to={`/edit/${id}`}>Edit</Link>
         </div>
     );
 };
