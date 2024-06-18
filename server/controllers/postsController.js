@@ -7,6 +7,14 @@ function getPosts(req, res, next){
     )
 }
 
+function getPost(req, res, next){
+    postsModel.getPost(req.params.id)
+        .then(post => res.json(post))
+        .catch(err => res.sendStatus(500)
+    )
+}
+
 module.exports = {
-    getPosts
+    getPosts,
+    getPost
 };

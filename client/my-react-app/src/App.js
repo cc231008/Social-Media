@@ -9,7 +9,7 @@ import Loading from "./pages/Loading";
 import Edit from "./pages/Edit";
 
 export default function App() {
-    /*
+/*
     const [clients, setClients] = useState([]);
 
     const getData = async () => {
@@ -26,9 +26,7 @@ export default function App() {
         getData();
     },[]);
 
-     */
-
-
+    */
     return (
 <div className="App">
             <Router>

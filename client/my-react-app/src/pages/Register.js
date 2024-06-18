@@ -13,7 +13,7 @@ export default function Register() {
     async function handleRegister(e) {
         e.preventDefault();
         try {
-        const response = await fetch('http://localhost:2999/auth/register', {
+        const response = await fetch('http://localhost:2999/users/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

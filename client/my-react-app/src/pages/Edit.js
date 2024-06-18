@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {useParams} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 
@@ -14,7 +14,7 @@ export default function Edit() {
         avatar: ''
     });
 
-    async function fetchUser() {
+    const fetchUser = useCallback(async () => {
         try {
             const response = await fetch(`http://localhost:2999/users/${id}`);
             const data = await response.json();
@@ -23,10 +23,11 @@ export default function Edit() {
         } catch (error) {
             console.error('Error:', error);
         }
-    }
+    }, [id]);
+
     useEffect(() => {
         fetchUser();
-    }, [id]);
+    }, [fetchUser]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

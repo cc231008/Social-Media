@@ -1,7 +1,9 @@
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import { useAuth } from '../components/AuthContext';
 
 export default function Login() {
+    const { setUser } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -17,7 +19,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            const response = await fetch('http://localhost:2999/auth/login', {
+            const response = await fetch('http://localhost:2999/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -29,17 +31,19 @@ export default function Login() {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage('Login successful!');
-                console.log('User logged in:', data);
-                navigate(`/clients/${data.id}`);
-                // Redirect or navigate to protected page
-            } else {
-                setMessage('Login failed: ' + data.error);
+                    setMessage('Login successful!');
+                    console.log('User logged in:', data);
+                    setUser(data);
+                    navigate(`/clients/${data.id}`);
+                    // Redirect or navigate to protected page
+                } else {
+                    setMessage('Login failed: ' + data.error);
+                }
+            } catch
+            (error)
+            {
+                setMessage('An error occurred: ' + error.message);
             }
-
-        } catch (error) {
-            setMessage('An error occurred: ' + error.message);
-        }
     }
 
 

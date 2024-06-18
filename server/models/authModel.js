@@ -3,46 +3,6 @@ const bcrypt = require('bcrypt');
 let jwt = require('jsonwebtoken');
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
-let registerUser = (userData) => new Promise(async (resolve, reject) => {
-    try {
-        //check if user exists
-        let checkUser = `SELECT * FROM client WHERE email = ${db.escape(userData.email)}`;
-        db.query(checkUser, function (err, result, fields){
-            if(err) {
-                reject(err)
-            }
-            if (result.length > 0) {
-                reject('User already exists')
-            }
-        })
-
-        //hash password
-         let hashedPassword = await bcrypt.hash(userData.password, 10);
-
-        //add new user into database
-        let sql = `INSERT INTO client (name, surname, username, email, bio, avatar, password) VALUES (` +
-            db.escape(userData.name) + `, ` +
-            db.escape(userData.surname) + `, ` +
-            db.escape(userData.username) + `, ` +
-            db.escape(userData.email) + `, ` +
-            db.escape(userData.bio) + `, ` +
-            db.escape(userData.avatar) + `, ` +
-            db.escape(hashedPassword) + `)`;
-        db.query(sql, function (err, result, fields){
-            if(err) {
-                reject(err)
-            }
-            console.log(result.affectedRows + " rows have been affected")
-            userData.id = result.insertId;
-            resolve(userData)
-        })
-    } catch (error) {
-        reject(error)
-    }
-})
-
-
-
 
 let loginUser = (userData) => new Promise(async (resolve, reject) => {
     try {
@@ -97,7 +57,46 @@ let loginUser = (userData) => new Promise(async (resolve, reject) => {
     }
 })
 
+let registerUser = (userData) => new Promise(async (resolve, reject) => {
+    try {
+        //check if user exists
+        let checkUser = `SELECT * FROM client WHERE email = ${db.escape(userData.email)}`;
+        db.query(checkUser, function (err, result, fields){
+            if(err) {
+                reject(err)
+            }
+            if (result.length > 0) {
+                reject('User already exists')
+            }
+        })
+
+        //hash password
+         let hashedPassword = await bcrypt.hash(userData.password, 10);
+
+        //add new user into database
+        let sql = `INSERT INTO client (name, surname, username, email, bio, avatar, password) VALUES (` +
+            db.escape(userData.name) + `, ` +
+            db.escape(userData.surname) + `, ` +
+            db.escape(userData.username) + `, ` +
+            db.escape(userData.email) + `, ` +
+            db.escape(userData.bio) + `, ` +
+            db.escape(userData.avatar) + `, ` +
+            db.escape(hashedPassword) + `)`;
+        db.query(sql, function (err, result, fields){
+            if(err) {
+                reject(err)
+            }
+            console.log(result.affectedRows + " rows have been affected")
+            userData.id = result.insertId;
+            resolve(userData)
+        })
+    } catch (error) {
+        reject(error)
+    }
+})
+
+
 module.exports = {
+    loginUser,
     registerUser,
-    loginUser
 };

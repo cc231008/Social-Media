@@ -30,6 +30,7 @@ export default function Profile() {
             <p>{client.bio}</p>
             <DeleteUser id={id} />
             <Link to={`/edit/${id}`}>Edit</Link>
+            <Link to="/home">Home</Link>
         </div>
     );
 };

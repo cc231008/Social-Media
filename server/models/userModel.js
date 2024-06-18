@@ -19,25 +19,6 @@ let getUser = (id) => new Promise((resolve, reject) => {
     })
 })
 
-let registerUser = (userData) => new Promise(async (resolve, reject) => {
-    let sql = `INSERT INTO client (name, surname, username, email, bio, avatar, password) VALUES (` +
-    db.escape(userData.name) + `, ` +
-    db.escape(userData.surname) + `, ` +
-    db.escape(userData.username) + `, ` +
-    db.escape(userData.email) + `, ` +
-    db.escape(userData.bio) + `, ` +
-    db.escape(userData.avatar) + `, ` +
-    db.escape(userData.password) + `)`;
-    db.query(sql, function (err, result, fields){
-        if(err) {
-            reject(err)
-        }
-        console.log(result.affectedRows + " rows have been affected")
-        userData.id = result.insertId;
-        resolve(userData)
-    })
-})
-
 let deleteUser = (id) => new Promise((resolve, reject)=>{
     let sql = `DELETE FROM client WHERE client.id = ${id}`;
     db.query(sql, function(err, result, fields){
@@ -67,10 +48,11 @@ let editUser = (id, userData) => new Promise((resolve, reject) => {
     })
 });
 
+
+
 module.exports = {
     getUsers,
     getUser,
-    registerUser,
     deleteUser,
     editUser
 };

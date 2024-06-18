@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import Comments from "../components/Comments";
 
 export default function Home({ client }) {
     const [posts, setPosts] = useState([])
@@ -20,13 +21,19 @@ export default function Home({ client }) {
     },[]);
 
 
+
     return (
         <div>
             <h1>Home</h1>
                 {posts.map((post) => (
                     <div key={post.id}>
-                        <img id="postImage" src={post.imgPost} alt="Alps" />
+                        <span id="userSection">
+                        <img id="profileImagePost" src={post.avatar} alt="Avatar" />
+                        <h3>{post.username}</h3>
+                        </span>
+                        <img id="postImage" src={post.imgPost} alt={post.namePost} />
                         <p>{post.description}</p>
+                        <Comments postId={post.id} />
                     </div>
                 ))}
         </div>

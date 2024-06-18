@@ -1,10 +1,16 @@
 const authModel = require('../models/authModel');
+const userModels = require('../models/userModel');
 
 
 
 function loginUser(req, res, next) {
-    authModel.loginUser(req.body)
-        .then(({client, token}) => {
+    // Pass the users in the authModel.loginUser function
+    authModel.loginUser(req.body, userModels.getUsers())
+        .then(({ client, token }) => {
+            if (!client || !token) {
+                console.error('Invalid login response from authModel:', { client, token });
+                throw new Error('Invalid login response from authModel');
+            }
             res.cookie('accessToken', token, {
                 httpOnly: true,
                 secure: true,
