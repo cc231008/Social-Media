@@ -22,7 +22,23 @@ function addComments(req, res, next) {
             .catch(err => res.status(500).json({ error: err.message }));
     }
 
+    function deleteComment (req, res, next) {
+    const { commentId } = req.params;
+        commentsModel.deleteComment(commentId)
+            .then(result => res.json(result))
+            .catch(err => res.status(500).json({ error: err }));
+    }
+
+    function updateComment (req, res, next) {
+    const { id, text } = req.body;
+        commentsModel.updateComment({ id, text })
+            .then(result => res.json(result))
+            .catch(err => res.status(500).json({ error: err }));
+    }
+
 module.exports = {
     getCommentsByPost,
-    addComments
+    addComments,
+    deleteComment,
+    updateComment
 }

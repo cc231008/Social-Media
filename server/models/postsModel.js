@@ -17,6 +17,16 @@ let getPost = (id) => new Promise((resolve, reject) => {
         }}
     )})
 
+let addPost = (post) => new Promise((resolve, reject) => {
+    db.query(`INSERT INTO posts (userId, imgPost, description) VALUES (${post.userId}, '${post.imgPost}', '${post.description}')`, function (err, result) {
+        if (err) {
+            reject(err)
+        } else {
+            resolve(result);
+        }}
+    )
+    })
+
 module.exports = {
     getPosts,
     getPost,

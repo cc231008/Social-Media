@@ -22,11 +22,34 @@ let addComments = (comments) => new Promise(async (resolve, reject) => {
         resolve(comment);
     });
 });
-//Working!!!
+
+let deleteComment = (commentId) => new Promise((resolve, reject) => {
+    let sql = `DELETE FROM comments WHERE id = ?`;
+    db.query(sql, [commentId], (err, result) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(result);
+        }
+    });
+});
+
+let updateComment = (comment) => new Promise((resolve, reject) => {
+    let sql = `UPDATE comments SET text = ? WHERE id = ?`;
+    db.query(sql, [comment.text, comment.id], (err, result) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(result);
+        }
+    });
+})
 
 
 
 module.exports = {
     getCommentsByPost,
-    addComments
+    addComments,
+    deleteComment,
+    updateComment
 }

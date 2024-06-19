@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import Comments from "../components/Comments";
+import Likes from "../components/Likes";
 
 export default function Home({ client }) {
     const [posts, setPosts] = useState([])
@@ -21,7 +22,6 @@ export default function Home({ client }) {
     },[]);
 
 
-
     return (
         <div>
             <h1>Home</h1>
@@ -34,6 +34,7 @@ export default function Home({ client }) {
                         <img id="postImage" src={post.imgPost} alt={post.namePost} />
                         <p>{post.description}</p>
                         <Comments postId={post.id} />
+                        <Likes postId={post.id} />
                     </div>
                 ))}
         </div>
