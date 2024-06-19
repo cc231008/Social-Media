@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import Comments from "../components/Comments";
 import Likes from "../components/Likes";
+import {Link} from "react-router-dom";
 
 export default function Home({ client }) {
     const [posts, setPosts] = useState([])
@@ -25,6 +26,7 @@ export default function Home({ client }) {
     return (
         <div>
             <h1>Home</h1>
+            <Link to="/uploads"> Add new post</Link>
                 {posts.map((post) => (
                     <div key={post.id}>
                         <span id="userSection">
@@ -33,6 +35,7 @@ export default function Home({ client }) {
                         </span>
                         <img id="postImage" src={post.imgPost} alt={post.namePost} />
                         <p>{post.description}</p>
+                        <Link to={`/posts/${post.id}`}>Edit</Link>
                         <Comments postId={post.id} />
                         <Likes postId={post.id} />
                     </div>

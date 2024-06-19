@@ -2,7 +2,7 @@ import {useEffect, useState, useCallback} from "react";
 import {useParams} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 
-export default function Edit() {
+export default function EditUser() {
     const navigate = useNavigate();
     const {id} = useParams();
     const [user, setUser] = useState({

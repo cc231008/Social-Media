@@ -18,16 +18,43 @@ let getPost = (id) => new Promise((resolve, reject) => {
     )})
 
 let addPost = (post) => new Promise((resolve, reject) => {
-    db.query(`INSERT INTO posts (userId, imgPost, description) VALUES (${post.userId}, '${post.imgPost}', '${post.description}')`, function (err, result) {
+    const {userId, imgPost, description, namePost} = post;
+    db.query(`INSERT INTO posts (userId, imgPost, description, namePost) VALUES (?, ?, ?, ?)`, [userId, imgPost, description, namePost], function (err, result) {
         if (err) {
             reject(err)
         } else {
-            resolve(result);
+            const post = {id: result.insertId, userId, imgPost, description, namePost};
+            resolve(post);
         }}
     )
     })
 
+let editPost = (post) => new Promise((resolve, reject) => {
+    const {id, userId, description, namePost} = post;
+    const sql = `UPDATE posts SET userId = ?, description = ?, namePost = ? WHERE id = ?`;
+    db.query(sql, [userId, description, namePost, id], function (err, result) {
+        if (err) {
+            console.error("Error editing post", err);
+            reject(err)
+        } else {
+            resolve(post);
+        }
+    })})
+
+let deletePost = (id) => new Promise((resolve, reject) => {
+    db.query(`DELETE FROM posts WHERE id = ${id}`, function (err, result) {
+        if (err) {
+            reject(err)
+        } else {
+            resolve(result);
+        }
+    })
+})
+
 module.exports = {
     getPosts,
     getPost,
+    addPost,
+    editPost,
+    deletePost
 }
