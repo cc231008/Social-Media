@@ -82,8 +82,7 @@ export default function Login() {
                     </form>
                     <p className="mt-4 text-center text-red-500">{message}</p>
                     <p className="mt-4 text-center">
-                        {"Don't have an account? Register now!"}
-                        {!user && <Link to="/register" className="text-indigo-500 hover:underline">Register</Link>}
+                        {!user && <Link to="/register" className="text-indigo-500 hover:underline">Don't have an account?</Link>}
                     </p>
                 </div>
             </div>
