@@ -7,6 +7,7 @@ export default function EditPost() {
     const { user } = useAuth();
     const [description, setDescription] = useState('');
     const [namePost, setNamePost] = useState('');
+    const [userId, setUserId] = useState('');
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,10 +21,12 @@ export default function EditPost() {
         });
         const data = await response.json();
         console.log('Added Post:', data);
+        setUserId(data.userId)
         navigate('/home');
     }
     return (
         <div>
+<h1>Edit Post</h1>
             <form onSubmit={handleSubmit}>
                 <label>
                     Description:

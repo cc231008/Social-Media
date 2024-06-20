@@ -2,8 +2,10 @@ import {useEffect, useState} from "react";
 import Comments from "../components/Comments";
 import Likes from "../components/Likes";
 import {Link} from "react-router-dom";
+import {useAuth} from "../components/AuthContext";
 
-export default function Home({ client }) {
+export default function Home() {
+    const { user } = useAuth();
     const [posts, setPosts] = useState([])
 
     let fetchPosts = async () => {
@@ -26,7 +28,7 @@ export default function Home({ client }) {
     return (
         <div>
             <h1>Home</h1>
-            <Link to="/uploads"> Add new post</Link>
+                <Link to="/uploads"> Add new post</Link>
                 {posts.map((post) => (
                     <div key={post.id}>
                         <span id="userSection">
@@ -35,7 +37,9 @@ export default function Home({ client }) {
                         </span>
                         <img id="postImage" src={post.imgPost} alt={post.namePost} />
                         <p>{post.description}</p>
+                        {user && user.id === post.userId ? (
                         <Link to={`/posts/${post.id}`}>Edit</Link>
+                        ) : null}
                         <Comments postId={post.id} />
                         <Likes postId={post.id} />
                     </div>
