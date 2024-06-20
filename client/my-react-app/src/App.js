@@ -11,24 +11,7 @@ import Uploads from "./pages/Uploads";
 import EditPost from "./pages/EditPost";
 
 export default function App() {
-/*
-    const [clients, setClients] = useState([]);
 
-    const getData = async () => {
-        try {
-            const response = await fetch('http://localhost:2999/users/');
-            const result = await response.json();
-            console.log(result)
-            setClients(result);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    useEffect(() => {
-        getData();
-    },[]);
-
-    */
     return (
 <div className="App">
             <Router>
@@ -41,7 +24,6 @@ export default function App() {
                     <Route path="/clients/:id" element={<Profile />} />
                     <Route path="/edit/:id" element={<EditUser />} />
                     <Route path="/uploads" element={<Uploads />} />
-
                 </Routes>
                 </Suspense>
             </Router>

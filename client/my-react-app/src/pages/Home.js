@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import Comments from "../components/Comments";
 import Likes from "../components/Likes";
 import {Link} from "react-router-dom";
@@ -6,9 +6,8 @@ import {useAuth} from "../components/AuthContext";
 
 export default function Home() {
     const { user } = useAuth();
-    const [posts, setPosts] = useState([])
-
-    let fetchPosts = async () => {
+    const [posts, setPosts] = useState([]);
+    let fetchPosts = useCallback(async () => {
         try {
             const response = await fetch('http://localhost:2999/posts/');
             const data = await response.json();
@@ -18,11 +17,11 @@ export default function Home() {
         catch (error) {
             console.log(error);
         }
-    }
+    }, [setPosts])
 
     useEffect(() => {
         fetchPosts();
-    },[]);
+    },[fetchPosts]);
 
 
     return (

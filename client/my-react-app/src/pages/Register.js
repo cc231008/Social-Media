@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../components/AuthContext";
 export default function Register() {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -9,6 +10,7 @@ export default function Register() {
     const [avatar, setAvatar] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const { setUser } = useAuth();
 
     async function handleRegister(e) {
         e.preventDefault();
@@ -18,10 +20,12 @@ export default function Register() {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({ name, surname, email, username, bio, avatar, password }),
         });
 
         const data = await response.json();
+        setUser(data);
         console.log(data);
 
         if (response.ok) {
