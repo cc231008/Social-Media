@@ -20,8 +20,13 @@ export default function DeletePost ({ postId }) {
     }
 
     return (
-        <div>
-            <button onClick={handleDelete}>Delete Post</button>
+        <div className="mt-4">
+            <button
+                onClick={handleDelete}
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+                Delete Post
+            </button>
         </div>
-    )
+    );
 }

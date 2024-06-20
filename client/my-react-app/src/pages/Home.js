@@ -25,24 +25,46 @@ export default function Home() {
 
 
     return (
-        <div>
-            <h1>Home</h1>
-                <Link to="/uploads"> Add new post</Link>
-                {posts.map((post) => (
-                    <div key={post.id}>
-                        <span id="userSection">
-                        <img id="profileImagePost" src={post.avatar} alt="Avatar" />
-                        <h3>{post.username}</h3>
-                        </span>
-                        <img id="postImage" src={post.imgPost} alt={post.namePost} />
-                        <p>{post.description}</p>
-                        {user && user.id === post.userId ? (
-                        <Link to={`/posts/${post.id}`}>Edit</Link>
-                        ) : null}
-                        <Comments postId={post.id} />
-                        <Likes postId={post.id} />
+        <div className="max-w-4xl mx-auto px-4 py-8">
+            <h1 className="text-3xl font-bold mb-8">Home</h1>
+            <Link
+                to="/uploads"
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg inline-block mb-4"
+            >
+                Add new post
+            </Link>
+            {posts.map((post) => (
+                <div key={post.id} className="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+                    <div className="p-4">
+                        <div className="flex items-center mb-4">
+                            <img
+                                src={post.avatar}
+                                alt="Avatar"
+                                className="w-10 h-10 rounded-full object-cover mr-2"
+                            />
+                            <h3 className="text-lg font-semibold">{post.username}</h3>
+                        </div>
+                        <img
+                            src={post.imgPost}
+                            alt={post.namePost}
+                            className="w-full h-auto mb-4 rounded-lg"
+                        />
+                        <p className="text-gray-700">{post.description}</p>
                     </div>
-                ))}
+                    <div className="p-4 border-t border-gray-200">
+                        {user && user.id === post.userId && (
+                            <Link
+                                to={`/posts/${post.id}`}
+                                className="text-blue-500 hover:text-blue-600 mr-4"
+                            >
+                                Edit
+                            </Link>
+                        )}
+                        <Likes postId={post.id} />
+                        <Comments postId={post.id} />
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }

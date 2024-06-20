@@ -102,34 +102,47 @@ const handleUpdate = async (commentId) => {
 }
 // It maps through each comment
     const renderComments = () => {
-
-        return comments.map((comment) => (
-
-            <div key={comment.id} className="comment">
-                <div className="comment-header">
-                    <h4>{comment.username}</h4>
+        return comments.map(comment => (
+            <div key={comment.id} className="bg-white rounded-lg shadow-md p-4 mb-4">
+                <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-semibold">{comment.username}</h4>
                     {user && user.id === comment.userId && (
-                        <div className="comment-actions">
+                        <div className="flex space-x-2">
                             {editCommentId !== comment.id ? (
-                                <button onClick={() => {
-                                    setEditCommentId(comment.id);
-                                    setEditCommentText(comment.text);
-                                }}>Edit</button>
+                                <button
+                                    onClick={() => {
+                                        setEditCommentId(comment.id);
+                                        setEditCommentText(comment.text);
+                                    }}
+                                    className="text-blue-500 hover:text-blue-600"
+                                >
+                                    Edit
+                                </button>
                             ) : (
-                                <button onClick={() => handleUpdate(comment.id)}>Save</button>
+                                <button
+                                    onClick={() => handleUpdate(comment.id)}
+                                    className="text-blue-500 hover:text-blue-600"
+                                >
+                                    Save
+                                </button>
                             )}
-                            <button onClick={() => handleDelete(comment.id)}>Delete</button>
+                            <button
+                                onClick={() => handleDelete(comment.id)}
+                                className="text-red-500 hover:text-red-600"
+                            >
+                                Delete
+                            </button>
                         </div>
                     )}
                 </div>
-                <div className="comment-content">
+                <div className="mb-2">
                     {editCommentId !== comment.id ? (
                         <p>{comment.text}</p>
                     ) : (
                         <textarea
                             value={editCommentText}
                             onChange={(e) => setEditCommentText(e.target.value)}
-                            placeholder="Edit your comment..."
+                            className="border rounded-lg p-2 w-full"
                             rows={3}
                         />
                     )}
@@ -139,25 +152,29 @@ const handleUpdate = async (commentId) => {
     };
 
     return (
-        <div className="comments-container">
-            <h1>Comments</h1>
-            <div className="comments-list">
-                {comments.length > 0 ? renderComments() : <p>No comments yet.</p>
-                //This message appears if there are no comments in the page.
-                }
+        <div className="max-w-lg mx-auto">
+            <h2 className="text-xl font-bold mb-4">Comments</h2>
+            <div className="space-y-4">
+                {comments.length > 0 ? renderComments() : <p>No comments yet.</p>}
             </div>
             {user ? (
-                <form onSubmit={handleSubmit} className="comment-form">
+                <form onSubmit={handleSubmit} className="mt-4">
                     <textarea
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
+                        className="border rounded-lg p-2 w-full"
                         placeholder="Write a comment..."
                         rows={3}
                     />
-                    <button type="submit">Add Comment</button>
+                    <button
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg mt-2"
+                    >
+                        Add Comment
+                    </button>
                 </form>
             ) : (
-                <p className="login-message">You must be logged in to comment.</p>
+                <p className="mt-4 text-gray-600">You must be logged in to comment.</p>
             )}
         </div>
     );

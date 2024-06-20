@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import {useEffect, useState} from "react";
 import {useAuth} from "./AuthContext";
 
@@ -42,12 +45,21 @@ export default function Likes({ postId }) {
     }
 
 
+
     return (
-        <div>
-        {user && (
-            <button onClick={handleLike}>
-                {liked ? 'Unlike' : 'Like'} ({likes})
-            </button>
-        )}
-        </div>);
+        <div className="flex items-center">
+            {user && (
+                <button
+                    onClick={handleLike}
+                    className={`flex items-center text-gray-500 hover:text-blue-500 focus:outline-none`}
+                >
+                    <FontAwesomeIcon
+                        icon={liked ? solidHeart : regularHeart}
+                        className={`text-lg mr-1 ${liked ? 'text-red-500' : ''}`}
+                    />
+                    {liked ? 'Unlike' : 'Like'} ({likes})
+                </button>
+            )}
+        </div>
+    );
 }
