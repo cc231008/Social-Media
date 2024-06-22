@@ -9,6 +9,7 @@ const postsRouter = require('./routes/posts.js');
 const commentsRouter = require('./routes/comments.js');
 const db = require('./services/database.js');
 const cors = require('cors');
+const path = require('path');
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -18,6 +19,7 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use('/users', usersRouter);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/posts', postsRouter);
 app.use('/comments', commentsRouter);
 

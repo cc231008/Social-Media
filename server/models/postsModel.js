@@ -18,16 +18,19 @@ let getPost = (id) => new Promise((resolve, reject) => {
     )})
 
 let addPost = (post) => new Promise((resolve, reject) => {
-    const {userId, imgPost, description, namePost} = post;
-    db.query(`INSERT INTO posts (userId, imgPost, description, namePost) VALUES (?, ?, ?, ?)`, [userId, imgPost, description, namePost], function (err, result) {
+    const { userId, imgPost, description, namePost } = post;
+    const imgPostJson = JSON.stringify(imgPost); // Convert array to JSON string
+
+    db.query(`INSERT INTO posts (userId, imgPost, description, namePost) VALUES (?, ?, ?, ?)`, [userId, imgPostJson, description, namePost], function (err, result) {
         if (err) {
-            reject(err)
+            reject(err);
         } else {
-            const post = {id: result.insertId, userId, imgPost, description, namePost};
-            resolve(post);
-        }}
-    )
-    })
+            const newPost = { id: result.insertId, userId, imgPost, description, namePost };
+            resolve(newPost);
+        }
+    });
+});
+
 
 let editPost = (post) => new Promise((resolve, reject) => {
     const {id, userId, description, namePost} = post;

@@ -3,28 +3,61 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 export default function NewPost () {
     const { user } = useAuth();
-    const [imgPost, setImgPost] = useState('');
     const [description, setDescription] = useState('');
     const [namePost, setNamePost] = useState('');
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (!user) {
             alert('You must be logged in to add a post.');
             return;
         }
-        const response = await fetch('http://localhost:2999/posts/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify( {userId: user.id, imgPost, description, namePost}),
-        });
-        const data = await response.json();
-        console.log('Added Post:', data);
-        navigate('/home');
+
+        const formData = new FormData();
+        const fileField = document.querySelector('input[type="file"]');
+
+        if (fileField.files.length === 0) {
+            alert('Please select an image file to upload.');
+            return;
         }
+
+        for (let i = 0; i < fileField.files.length; i++) {
+            formData.append('imgPost', fileField.files[i]);
+        }
+        formData.append('description', description);
+        formData.append('namePost', namePost);
+        formData.append('userId', user.id);
+
+        try {
+            const response = await fetch('http://localhost:2999/posts/add', {
+                method: 'POST',
+                credentials: 'include',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                console.error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.imgPost) {
+                console.error('Image data not found in the response');
+            }
+
+            data.imgUrls.forEach(img => {
+                const imgElement = document.createElement('img');
+                imgElement.src = img.url;
+                imgElement.alt = img.filename;
+                document.body.appendChild(imgElement);
+            } );
+            console.log('Image Upload Successful:', data);
+            // navigate('/home');
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
 
 
     return (
@@ -33,16 +66,14 @@ export default function NewPost () {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="imgPost" className="block text-sm font-medium text-gray-700">
-                        Image URL:
+                        Image Post:
                     </label>
                     <input
                         id="imgPost"
-                        type="text"
+                        type="file"
+                        multiple {/* Allow multiple files */}
+                        accept="image/*" {/* Accept only image files */}
                         name="imgPost"
-                        value={imgPost}
-                        onChange={(e) => setImgPost(e.target.value)}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                        placeholder="Enter image URL"
                     />
                 </div>
                 <div>
