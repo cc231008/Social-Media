@@ -1,30 +1,32 @@
 import {useCallback, useEffect, useState} from "react";
 import {useAuth} from "./AuthContext";
+
 export default function Comments({ postId }) {
     const { user } = useAuth();
-    const [comments, setComments] = useState([]); // useState that allows us to store the comments and display them on the page.
-    const [newComment, setNewComment] = useState(''); // useState that allows us to store the new comment that the user is typing.
+    const [comments, setComments] = useState([]); // useState that allows us to store the comments and DISPLAY them on the page.
+    const [newComment, setNewComment] = useState(''); // useState that allows us to store the new comment that the user is TYPING.
     const [editCommentId, setEditCommentId] = useState(null); // useState that allows us to store the id of the comment that the user wants to edit.
     const [editCommentText, setEditCommentText] = useState('');
 
-    // useCallback memorizes all the comments that are fetched from the server and does not fetch them again.
+    // useCallback MEMORIZES ALL THE COMMENTS that are fetched from the server and does not fetch them again.
     const fetchComments = useCallback(async () => {
 
         try {
 
             const response = await fetch(`http://localhost:2999/comments/${postId}`, {
-                credentials: 'include', // It's important for cookies to identify the user.
+                credentials: 'include', // Adds cookies to the request.
             });
 
             const data = await response.json();
             setComments(data);
+            console.log('Comments:', data);
         }
         catch (error) {
             console.error('Fetch Comments Error:', error);
         }
     }, [postId]);
 
-
+    // useEffect activates the fetchComments function when the component is rendered.
     useEffect(() => {
         fetchComments();
     }, [fetchComments]);
@@ -52,7 +54,10 @@ export default function Comments({ postId }) {
             const data = await response.json();
             console.log('Added Comment:', data);
 
-            setComments((prevComments) => [...prevComments, data]); // Takes the old list of comments and adds the new comment to it.
+            const newCommentWithUsername = { ...data, username: user.username };
+
+            // Update comments state with the new comment
+            setComments(prevComments => [...prevComments, newCommentWithUsername]);
 
             setNewComment(''); // Clears the input field after the comment is added.
     }
@@ -79,48 +84,68 @@ const handleDelete = async (commentId) => {
 }
 
 // Function for Updating Comments
-const handleUpdate = async (commentId) => {
+const handleUpdate = async () => {
+        if (!editCommentId) return;
+
     try {
-        const response = await fetch(`http://localhost:2999/comments/update/${commentId}`, {
+        const response = await fetch(`http://localhost:2999/comments/update/${editCommentId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
             credentials: 'include',
-            body: JSON.stringify({ id: editCommentId, text: editCommentText }),
+            body: JSON.stringify({ id: editCommentId, text: editCommentText }), // Sends the updated comment text to the server.
         });
-        const updatedComment = await response.json();
-        setComments((prevComments) =>
-            prevComments.map((comment) => (comment.id === editCommentId ? updatedComment : comment))
+
+        const data = await response.json();
+        console.log('Updated Comment:', data);
+        // Takes the old list of comments and EDITS the existing comment to it.
+
+        setComments(prevComments =>
+            prevComments.map(comment => {
+                return comment.id === editCommentId ? { ...comment, text: editCommentText } : comment; // If the comment id matches the edit comment id, update the text of the comment.
+            }
+            )
         );
-        setEditCommentId(null); // Exit edit mode
+
+        // RESETS the edit comment id and text after the comment is updated.
+        setEditCommentId(null);
         setEditCommentText('')
     }
     catch (error) {
         console.error('Error updating comment:', error);
     }
 }
-// It maps through each comment
+//
     const renderComments = () => {
+
         return comments.map(comment => (
+
             <div key={comment.id} className="bg-white rounded-lg shadow-md p-4 mb-4">
                 <div className="flex justify-between items-center mb-2">
                     <h4 className="font-semibold">{comment.username}</h4>
+                    {
+                        // If the user is logged in and a comment belongs to the user, the user can EDIT or DELETE the comment.
+                    }
                     {user && user.id === comment.userId && (
                         <div className="flex space-x-2">
+                            {
+                                // If the user IS NOT EDITING the comment, the user can press the button to EDIT the comment.
+                            }
                             {editCommentId !== comment.id ? (
                                 <button
                                     onClick={() => {
-                                        setEditCommentId(comment.id);
-                                        setEditCommentText(comment.text);
+                                        setEditCommentId(comment.id); // Choose the comment to edit.
+                                        setEditCommentText(comment.text); // Set the text of the comment to edit.
                                     }}
-                                    className="text-blue-500 hover:text-blue-600"
-                                >
+                                    className="text-blue-500 hover:text-blue-600">
                                     Edit
                                 </button>
                             ) : (
+
+                                // If the user IS EDITING the comment, the user can press the button to SAVE the comment.
                                 <button
-                                    onClick={() => handleUpdate(comment.id)}
+                                    onClick={handleUpdate}
                                     className="text-blue-500 hover:text-blue-600"
                                 >
                                     Save
@@ -136,6 +161,9 @@ const handleUpdate = async (commentId) => {
                     )}
                 </div>
                 <div className="mb-2">
+                    {
+                        // If the user is NOT EDITING the comment, the comment is displayed as text.
+                    }
                     {editCommentId !== comment.id ? (
                         <p>{comment.text}</p>
                     ) : (
@@ -155,8 +183,16 @@ const handleUpdate = async (commentId) => {
         <div className="max-w-lg mx-auto">
             <h2 className="text-xl font-bold mb-4">Comments</h2>
             <div className="space-y-4">
+
+                {
+                    // If there are comments, render them as a list of comments.
+                }
                 {comments.length > 0 ? renderComments() : <p>No comments yet.</p>}
             </div>
+
+            {
+                // A comment section that allows users to WRITE A COMMENT and ADD IT to the list of comments, if they are logged in.
+            }
             {user ? (
                 <form onSubmit={handleSubmit} className="mt-4">
                     <textarea
@@ -176,6 +212,8 @@ const handleUpdate = async (commentId) => {
             ) : (
                 <p className="mt-4 text-gray-600">You must be logged in to comment.</p>
             )}
+
+
         </div>
     );
 }

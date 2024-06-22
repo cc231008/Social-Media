@@ -26,7 +26,7 @@ export default function Register() {
 
         const data = await response.json();
         setUser(data);
-        console.log(data);
+        console.log('User registered:', data);
 
         if (response.ok) {
             navigate(`/clients/${data.id}`);

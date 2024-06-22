@@ -3,17 +3,16 @@ import {Link, useNavigate} from "react-router-dom";
 import { useAuth } from '../components/AuthContext';
 
 export default function Login() {
-    const { user, setUser } = useAuth();
+    const { user, setUser } = useAuth(); // <-- Stores data about the logged in user
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-
-    const [message, setMessage] = useState('');
-
+    const [message, setMessage] = useState(''); // Error message
     const navigate = useNavigate();
+
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({ ...formData, [e.target.name]: e.target.value }); // ...formData copies old values, then we update the changed field right after.
     }
 
     const handleSubmit = async (e) => {
@@ -33,9 +32,8 @@ export default function Login() {
             if (response.ok) {
                     setMessage('Login successful!');
                     console.log('User logged in:', data);
-                    setUser(data);
-                    navigate(`/clients/${data.id}`);
-                    // Redirect or navigate to protected page
+                    setUser(data); // Save the logged in user
+                    navigate(`/clients/${data.id}`); // Redirect to the user's profile page
                 } else {
                     setMessage('Login failed: ' + data.error);
                 }
