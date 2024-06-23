@@ -5,7 +5,13 @@ let getPosts = () => new Promise((resolve, reject) => {
         if (err) {
             reject(err)
         } else {
-            resolve(posts);
+            const updatedPosts = posts.map(post => {
+                return {
+                    ...post,
+                    imgPost: JSON.parse(post.imgPost).map(filename => `http://localhost:2999/uploads/${filename}`)
+                }
+            })
+            resolve(updatedPosts);
         }})})
 
 let getPost = (id) => new Promise((resolve, reject) => {

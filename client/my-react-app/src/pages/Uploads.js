@@ -47,13 +47,11 @@ export default function NewPost () {
             }
 
             data.imgUrls.forEach(img => {
-                const imgElement = document.createElement('img');
-                imgElement.src = img.url;
-                imgElement.alt = img.filename;
-                document.body.appendChild(imgElement);
-            } );
+                console.log(`Image URL: ${img.url}`);
+            });
+
             console.log('Image Upload Successful:', data);
-            // navigate('/home');
+            navigate('/home');
         } catch (error) {
             console.error('Error uploading image:', error);
         }
@@ -71,8 +69,8 @@ export default function NewPost () {
                     <input
                         id="imgPost"
                         type="file"
-                        multiple {/* Allow multiple files */}
-                        accept="image/*" {/* Accept only image files */}
+                        multiple
+                        accept="image/*"
                         name="imgPost"
                     />
                 </div>

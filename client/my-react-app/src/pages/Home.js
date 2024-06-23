@@ -7,6 +7,7 @@ import {useAuth} from "../components/AuthContext";
 export default function Home() {
     const { user } = useAuth();
     const [posts, setPosts] = useState([]);
+
     let fetchPosts = useCallback(async () => {
         try {
             const response = await fetch('http://localhost:2999/posts/');
@@ -44,11 +45,14 @@ export default function Home() {
                             />
                             <h3 className="text-lg font-semibold">{post.username}</h3>
                         </div>
-                        <img
-                            src={post.imgPost}
-                            alt={post.namePost}
-                            className="w-full h-auto mb-4 rounded-lg"
-                        />
+                        {post.imgPost.map((imgUrl, index) => (
+                            <img
+                                key={index}
+                                src={imgUrl}
+                                alt={`Post ${index}`}
+                                className="w-full object-cover mb-4"
+                            />
+                        ))}
                         <p className="text-gray-700">{post.description}</p>
                     </div>
                     <div className="p-4 border-t border-gray-200">

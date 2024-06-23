@@ -30,7 +30,6 @@ function addPost(req, res, next) {
         }
 
         try {
-            // Assuming you're storing filenames or some identifier in the database
             const imgPostFilenames = imgPosts.map(file => file.filename);
 
             const result = await postsModel.addPost({ userId, imgPost: imgPostFilenames, description, namePost });
@@ -38,7 +37,6 @@ function addPost(req, res, next) {
                 url: `http://localhost:2999/uploads/${filename}`,
                 filename
             }));
-            console.log(req.files, req.body);
             res.json({ ...result, imgUrls });
         } catch (error) {
             console.error(error);
