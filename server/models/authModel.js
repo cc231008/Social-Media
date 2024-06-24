@@ -4,6 +4,8 @@ let jwt = require('jsonwebtoken');
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 
+// In this function, we are checking if the user exists in the database and if the password is correct.
+// If the user exists and the password is correct, we are creating a JWT token and returning the user and the token.
 let loginUser = (userData) => new Promise(async (resolve, reject) => {
     try {
         //check if data is provided
@@ -28,7 +30,7 @@ let loginUser = (userData) => new Promise(async (resolve, reject) => {
                 return reject('Invalid password')
             }
 
-            //compare password
+            //compare password that user entered with the one in the database.
             bcrypt.compare(userData.password, client.password, function(err, isMatch) {
                 if (err) {
                     console.error('Bcrypt comparison error:', err);
@@ -57,6 +59,8 @@ let loginUser = (userData) => new Promise(async (resolve, reject) => {
     }
 })
 
+// In this function, we are checking if the user exists in the database.
+// If the user exists, we are hashing the password and adding the new user into the database.
 let registerUser = (userData) => new Promise(async (resolve, reject) => {
     try {
         //check if user exists

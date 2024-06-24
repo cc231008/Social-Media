@@ -1,7 +1,9 @@
 import {Link} from 'react-router-dom';
 import {useAuth} from "./AuthContext";
+
+// This is the navigation bar that is displayed at the top of the page. It contains links to the different pages of the application.
 export default function Navbar() {
-    const { user } = useAuth();
+    const { user } = useAuth(); // This is the logged in user.
 
     return (
         <nav className="bg-gray-800 py-4">

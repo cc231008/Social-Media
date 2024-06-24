@@ -1,31 +1,48 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../components/AuthContext";
+
+// This is the page where the user can register a new account. He needs fill in the form with his information.
 export default function Register() {
+    // This is a list of variables that are used to store the user's information to be sent to the server and create a new user.
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
-    const [avatar, setAvatar] = useState('');
+    const [avatar, setAvatar] = useState(null);
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
-    const { setUser } = useAuth();
+
+    const navigate = useNavigate(); // This is a function that allows us to navigate to a different page.
+    const { setUser } = useAuth(); // This is a function that allows us to set the user's information in the context.
 
     async function handleRegister(e) {
         e.preventDefault();
         try {
-        const response = await fetch('http://localhost:2999/users/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({ name, surname, email, username, bio, avatar, password }),
+
+            const formData = new FormData(); // This is a form data object that will be used to send the user's information to the server.
+
+            // This part of the code appends the user's information to the form data object (or to formData).
+            formData.append('name', name);
+            formData.append('surname', surname);
+            formData.append('email', email);
+            formData.append('username', username);
+            formData.append('bio', bio);
+            if (avatar) {
+                formData.append('avatar', avatar);
+            }
+            formData.append('password', password);
+
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/users/register`, {
+            method: 'POST', // This is a POST request to register a new user.
+            credentials: 'include', // This includes the user's credentials and cookies in the request.
+            body: formData // body sends the form data object to the server.
         });
 
-        const data = await response.json();
-        setUser(data);
+        const data = await response.json(); // "data" contains information about the user that was registered.
+
+        setUser(data); // "setUser" adds the user's information to the context in order to notify the application that the user is logged in.
+
         console.log('User registered:', data);
 
         if (response.ok) {
@@ -38,6 +55,12 @@ export default function Register() {
     catch (error) {
         console.error("Error", error);
     }
+    }
+
+    // The purpose of this function is to store the selected file in the state.
+    function handleAvatarChange(e) {
+        const file = e.target.files[0];
+        setAvatar(file); // Store the file object
     }
 
     return (
@@ -120,12 +143,11 @@ export default function Register() {
                     </label>
                     <input
                         id="avatar"
-                        type="text"
+                        type="file"
                         name="avatar"
-                        value={avatar}
-                        onChange={(e) => setAvatar(e.target.value)}
+                        accept="image/*"
+                        onChange={handleAvatarChange} // Store selected file in state
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                        placeholder="Paste URL for your avatar"
                     />
                 </div>
                 <div>

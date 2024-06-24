@@ -2,46 +2,59 @@ import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useAuth } from '../components/AuthContext';
 
+// This is the page where the user can login to his account using his email and password.
 export default function Login() {
-    const { user, setUser } = useAuth(); // <-- Stores data about the logged in user
+    const { user, setUser } = useAuth(); // This is the logged in user.
+    // This is the state that stores the user's email and password.
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-    const [message, setMessage] = useState(''); // Error message
-    const navigate = useNavigate();
+
+    // Error or Success message created when login fails or succeeds to type right data for debugging purposes.
+    const [message, setMessage] = useState('');
+
+    const navigate = useNavigate(); // This is a function that allows us to navigate to a different page.
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value }); // ...formData copies old values, then we update the changed field right after.
+        /*
+        This is a simple function that updates old state with new state.
+        It uses "Spread Operator" which makes a copy of the old data.
+        Next it updates the state with new data.
+        Such practice is called "Immutability".
+         */
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
+    // This function is called when the user submits the form for logging in.
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            const response = await fetch('http://localhost:2999/users/login', {
-                method: 'POST',
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/users/login`, {
+                method: 'POST', // This is a POST request to login the user.
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json' // This is the type of data that is being sent to the server.
                 },
-                body: JSON.stringify(formData),
-                credentials: 'include'
+                body: JSON.stringify(formData), // This is the data that is being sent to the server.
+                credentials: 'include' // This includes the user's credentials and cookies in the request.
             });
 
-            const data = await response.json();
+            const data = await response.json(); // "data" contains information about the user that was logged in.
 
             if (response.ok) {
                     setMessage('Login successful!');
                     console.log('User logged in:', data);
                     setUser(data); // Save the logged in user
                     navigate(`/clients/${data.id}`); // Redirect to the user's profile page
-                } else {
+                }
+            else {
                     setMessage('Login failed: ' + data.error);
                 }
-            } catch
-            (error)
-            {
-                setMessage('An error occurred: ' + error.message);
             }
+
+        catch (error) {
+            setMessage('An error occurred: ' + error.message);
+        }
     }
 
     return (

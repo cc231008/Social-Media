@@ -4,6 +4,7 @@ const postController = require('../controllers/postsController');
 const likesController = require('../controllers/likesController');
 const authMiddleware = require('../services/authMiddleware');
 
+// Routes for posts
 router.get('/', postController.getPosts);
 router.get('/:id', postController.getPost);
 router.post('/add', authMiddleware.authenticateUser, postController.addPost);

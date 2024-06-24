@@ -1,12 +1,13 @@
 import {useAuth} from "./AuthContext";
 import {useNavigate} from "react-router-dom";
 
+// This is a button that allows the user to delete his post. It is used in the Post page.
 export default function DeletePost ({ postId }) {
     const { user } = useAuth();
     const navigate = useNavigate();
 
     const handleDelete = async () => {
-        const response = await fetch(`http://localhost:2999/posts/${postId}/delete`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${postId}/delete`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,7 +17,7 @@ export default function DeletePost ({ postId }) {
         });
         const data = await response.json();
         console.log('Deleted Post:', data);
-        navigate('/home');
+        navigate('/home'); // Redirect to the home page.
     }
 
     return (

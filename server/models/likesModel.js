@@ -1,7 +1,6 @@
 const {config: db} = require("../services/database");
 
-
-//Works
+// In this SQL query, we are selecting all columns from the likes table where the postId is equal to the id that is passed as a parameter.
 let getLikes = (postId) => new Promise((resolve, reject) => {
     db.query(`SELECT COUNT(*) as likeCount FROM likes WHERE postId = ?`, [postId], function (err, likes, fields) {
         if (err) {
@@ -11,7 +10,7 @@ let getLikes = (postId) => new Promise((resolve, reject) => {
         }})
 })
 
-// Does not work
+// In this SQL query, we are inserting a new like into the likes table.
 let addLike = (likeData) => new Promise((resolve, reject) => {
     //check if data is provided
     if (!likeData.userId || !likeData.postId) {
@@ -41,9 +40,11 @@ let addLike = (likeData) => new Promise((resolve, reject) => {
         if (err) {
             reject(err)
         } else {
-            resolve(likes[0]);
+            resolve(likes[0]); // return the number of likes
         }})
 })
+
+// In this SQL query, we are deleting a like from the likes table.
 function deleteLike(likeData) {
     return new Promise((resolve, reject) => {
         db.query(`DELETE FROM likes WHERE userId = ? AND postId = ?`, [likeData.userId, likeData.postId], function (err, result) {

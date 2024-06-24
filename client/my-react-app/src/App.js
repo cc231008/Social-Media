@@ -1,6 +1,10 @@
-import './App.css';
+// "Suspense" is a component that is used to wrap around the components that are being loaded asynchronously. It helps to handle the loading state of the components.
 import {Suspense} from "react";
+
+// "BrowserRouter" is a component that provides the routing functionality to the application. It helps to navigate between different pages of the application.
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+
+// This is the list of the pages that are being imported in the application.
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -10,10 +14,17 @@ import EditUser from "./pages/EditUser";
 import Uploads from "./pages/Uploads";
 import EditPost from "./pages/EditPost";
 import Navbar from "./components/NavBar";
+
+// "ProtectedRoute" is a custom component that was designed to protect routes from unauthorized access.
 import ProtectedRoute from "./components/ProtectedRoute";
+// "useAuth" is a custom hook that was designed to provide the user's authentication status. In other words, it checks if the user is logged in or not.
 import {useAuth} from "./components/AuthContext";
 
+/*
+This page is the main page of the application. It contains the routes for the different pages of the application.
+ */
 export default function App() {
+
     const { user } = useAuth();
 
     return (

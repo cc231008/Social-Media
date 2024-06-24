@@ -3,15 +3,20 @@ import {useEffect, useState} from "react";
 import DeleteUser from "../components/DeleteUserButton";
 import {useAuth} from "../components/AuthContext";
 
+// This is the page where the user can see his profile information.
 export default function Profile() {
-    const { id } = useParams();
-    const [client, setClient] = useState({});
-    const { user } = useAuth();
+
+    const { id } = useParams(); // This is the id of the user whose profile we want to see. It activates after login and registration.
+
+    const [client, setClient] = useState({}); // This is the user's information that will be displayed on the page.
+
+    const { user } = useAuth(); // This is the logged in user.
 
     useEffect(() => {
+        // This function fetches the user's information from the server.
         const getData = async () => {
             try {
-                const response = await fetch(`http://localhost:2999/users/${id}`);
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${id}`);
                 const result = await response.json();
                 console.log(result)
                 setClient(result);
@@ -43,11 +48,13 @@ export default function Profile() {
                     ) : null}
                 </div>
                 <div className="flex items-center justify-center mb-6">
-                    <img
-                        src={client.avatar}
-                        alt={client.name}
-                        className="w-32 h-32 object-cover rounded-full"
-                    />
+                    {client.avatar && (
+                        <img
+                            src={`http://localhost:2999/uploads/avatars/${client.avatar}`}
+                            alt={client.name}
+                            className="w-32 h-32 object-cover rounded-full"
+                        />
+                    )}
                 </div>
                 <div className="mb-4">
                     <p className="text-gray-700">

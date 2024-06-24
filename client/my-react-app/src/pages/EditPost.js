@@ -1,27 +1,31 @@
 import {useAuth} from "../components/AuthContext";
 import {useState} from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import DeletePost from "../components/DeletePost";
+import DeletePost from "../components/DeletePost"; // Go to the DeletePost.js file in the components folder to see how it works.
+
+// This is the page where the user can edit his own post.
 export default function EditPost() {
-    const {postId} = useParams();
-    const {user} = useAuth();
+    const {postId} = useParams(); // This is the id of the post that the user wants to edit.
+    const {user} = useAuth(); // Logged in user.
     const [description, setDescription] = useState('');
     const [namePost, setNamePost] = useState('');
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // This is a function that allows us to navigate to a different page.
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(`http://localhost:2999/posts/${postId}/edit`, {
-            method: 'PATCH',
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/${postId}/edit`, {
+            method: 'PATCH', // This is a PATCH request to edit the post.
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', // This is the type of data that is being sent to the server.
             },
-            credentials: 'include',
-            body: JSON.stringify({postId, userId: user.id, description, namePost}),
+            credentials: 'include', // This includes the user's credentials and cookies in the request.
+            body: JSON.stringify({postId, userId: user.id, description, namePost}), // This is the data that is being sent to the server.
         });
+
         const data = await response.json();
         console.log('Added Post:', data);
 
-        navigate('/home');
+        navigate('/home'); // Redirect to the home page.
     }
     return (
         <div className="max-w-3xl mx-auto px-4 py-8">
