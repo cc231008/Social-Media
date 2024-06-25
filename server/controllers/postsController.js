@@ -41,7 +41,7 @@ function addPost(req, res, next) {
             // Create an array of objects with the URL and filename of the uploaded images.
             // It looks like this: [{ url: 'http://localhost:2999/uploads/filename1.jpg', filename: 'filename1.jpg' }]
             const imgUrls = imgPostFilenames.map(filename => ({
-                url: `http://localhost:2999/uploads/${filename}`,
+                url: `${process.env.SERVER_HOST}/uploads/${filename}`,
                 filename
             }));
 

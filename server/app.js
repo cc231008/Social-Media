@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({
-    origin: 'http://localhost:3000', // This is the address of the frontend that the server will accept.
+    origin: `${process.env.CLIENT_HOST}`, // This is the address of the frontend that the server will accept.
     credentials: true // This is to allow the server to set cookies in the client.
 
 }));

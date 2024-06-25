@@ -43,7 +43,7 @@ function registerUser(req, res, next) {
 const avatarPath = avatar.filename; // Get the filename of the uploaded avatar.
 
 const imgUrls = avatarPath ? [{
-    url: `http://localhost:2999/uploads/avatars/${avatarPath}`,
+    url: `${process.env.SERVER_HOST}/uploads/avatars/${avatarPath}`,
     filename: avatarPath
 }] : [];
 

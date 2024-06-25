@@ -11,7 +11,7 @@ let getPosts = () => new Promise((resolve, reject) => {
             const updatedPosts = posts.map(post => {
                 return {
                     ...post,
-                    imgPost: JSON.parse(post.imgPost).map(filename => `http://localhost:2999/uploads/${filename}`)
+                    imgPost: JSON.parse(post.imgPost).map(filename => `${process.env.SERVER_HOST}/uploads/${filename}`)
                 }
             })
             resolve(updatedPosts);

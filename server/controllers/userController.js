@@ -34,7 +34,7 @@ const editUser = (req, res, next) => {
 
     // If avatarPath is not empty, then it means that the user has uploaded a new image.
     const imgUrls = avatarPath ? [{
-        url: `http://localhost:2999/uploads/avatars/${avatarPath}`,
+        url: `${process.env.SERVER_HOST}/uploads/avatars/${avatarPath}`,
         filename: avatarPath
     }] : [];
 
