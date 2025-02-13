@@ -19,7 +19,6 @@ export default function Register() {
     async function handleRegister(e) {
         e.preventDefault();
         try {
-
             const formData = new FormData(); // This is a form data object that will be used to send the user's information to the server.
 
             // This part of the code appends the user's information to the form data object (or to formData).
@@ -28,9 +27,7 @@ export default function Register() {
             formData.append('email', email);
             formData.append('username', username);
             formData.append('bio', bio);
-            if (avatar) {
-                formData.append('avatar', avatar);
-            }
+            formData.append('avatar', avatar);
             formData.append('password', password);
 
         const response = await fetch(`${process.env.REACT_APP_API_URL}/users/register`, {
@@ -40,10 +37,9 @@ export default function Register() {
         });
 
         const data = await response.json(); // "data" contains information about the user that was registered.
-
+        console.log('User registered:', data);
         setUser(data); // "setUser" adds the user's information to the context in order to notify the application that the user is logged in.
 
-        console.log('User registered:', data);
 
         if (response.ok) {
             navigate(`/clients/${data.id}`);
@@ -59,8 +55,7 @@ export default function Register() {
 
     // The purpose of this function is to store the selected file in the state.
     function handleAvatarChange(e) {
-        const file = e.target.files[0];
-        setAvatar(file); // Store the file object
+        setAvatar(e.target.files[0]); // Store the file object
     }
 
     return (

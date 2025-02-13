@@ -2,6 +2,7 @@ import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import DeleteUser from "../components/DeleteUserButton";
 import {useAuth} from "../components/AuthContext";
+import {Buffer} from "buffer";
 
 // This is the page where the user can see his profile information.
 export default function Profile() {
@@ -50,7 +51,7 @@ export default function Profile() {
                 <div className="flex items-center justify-center mb-6">
                     {client.avatar && (
                         <img
-                            src={`http://localhost:2999/uploads/avatars/${client.avatar}`}
+                            src={`data:image/jpeg;base64,${Buffer.from(client.avatar).toString('base64')}`}
                             alt={client.name}
                             className="w-32 h-32 object-cover rounded-full"
                         />

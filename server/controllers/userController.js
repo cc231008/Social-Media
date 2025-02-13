@@ -28,22 +28,10 @@ function deleteUser(req, res, next) {
 const editUser = (req, res, next) => {
     const id = req.params.id;
     const { name, surname, email, username, bio } = req.body;
+    const avatar = req.file.buffer;
 
-    // If avatar is not edited, then old image is used as avatar, otherwise new image is uploaded.
-    const avatarPath = req.file ? req.file.filename : req.body.avatar
-
-    // If avatarPath is not empty, then it means that the user has uploaded a new image.
-    const imgUrls = avatarPath ? [{
-        url: `${process.env.SERVER_HOST}/uploads/avatars/${avatarPath}`,
-        filename: avatarPath
-    }] : [];
-
-    userModel.editUser(id, { name, surname, email, username, bio, avatar: avatarPath })
-        .then(result => {
-           // If the user has uploaded a new image, then we send the response with the new image.
-            const response = {...result, imgUrls: imgUrls};
-            res.json(response);
-        })
+    userModel.editUser(id, { name, surname, email, username, bio, avatar })
+        .then(result => {res.json(result)})
         .catch(err => {
             console.error('Error editing user:', err);
             res.sendStatus(500);

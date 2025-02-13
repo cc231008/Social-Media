@@ -3,11 +3,13 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const {authenticateUser} = require("../services/authMiddleware");
-const uploadAvatar = require('../services/multerAvatarConfig');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({storage: storage});
 
 // Routes for users
 router.post('/login', authController.loginUser); // The loginUser function is called when a POST request is made to the /login endpoint.
-router.post('/register', authController.registerUser);
+router.post('/register', upload.single('avatar'), authController.registerUser);
 
 router.get('/', userController.getUsers); // The getUsers function is called when a GET request is made to the / endpoint.
 
@@ -18,7 +20,7 @@ router.get('/me', authenticateUser, (req, res) => {
     res.json(req.user);
 });
 
-router.patch('/:id', uploadAvatar.single('avatar'), userController.editUser); // The editUser function is called when a PATCH request is made to the /:id endpoint.
+router.patch('/:id', upload.single('avatar'), userController.editUser); // The editUser function is called when a PATCH request is made to the /:id endpoint.
 
 router.delete('/:id', userController.deleteUser); // The deleteUser function is called when a DELETE request is made to the /:id endpoint.
 

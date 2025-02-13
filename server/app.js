@@ -9,7 +9,6 @@ const postsRouter = require('./routes/posts.js');
 const commentsRouter = require('./routes/comments.js');
 
 const cors = require('cors'); // This is the middleware that allows the server to accept requests from the client or frontend.
-const path = require('path');
 
 
 app.use(bodyParser.json());
@@ -25,7 +24,6 @@ app.use(cookieParser());
 
 // These are the routes that the server will use to handle requests.
 app.use('/users', usersRouter);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/posts', postsRouter);
 app.use('/comments', commentsRouter);
 

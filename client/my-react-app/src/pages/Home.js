@@ -3,6 +3,7 @@ import Comments from "../components/Comments";
 import Likes from "../components/Likes";
 import {Link} from "react-router-dom";
 import {useAuth} from "../components/AuthContext";
+import {Buffer} from "buffer";
 
 // This is the page where the user can see all the posts that were uploaded by all the users.
 export default function Home() {
@@ -16,9 +17,8 @@ export default function Home() {
      */
     let fetchPosts = useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts/`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/posts`);
             const data = await response.json();
-            console.log(data);
             setPosts(data);
         }
         catch (error) {
@@ -46,25 +46,19 @@ export default function Home() {
                     <div className="p-4">
                         <div className="flex items-center mb-4">
                             <img
-                                src={`http://localhost:2999/uploads/avatars/${post.avatar}`}
+                                src={`data:image/jpeg;base64,${Buffer.from(post.avatar).toString('base64')}`}
                                 alt="Avatar"
                                 className="w-10 h-10 rounded-full object-cover mr-2"
                             />
                             <h3 className="text-lg font-semibold">{post.username}</h3>
                         </div>
 
-                        {post.imgPost.map((imgUrl, index) => (
-                            /*
-                            This part of the code displays the images that were uploaded by the user.
-                            It uses the map here because images are stored and received in an array.
-                             */
                             <img
-                                key={index}
-                                src={imgUrl}
-                                alt={`Post ${index}`}
+                                key={post.id}
+                                src={`data:image/jpeg;base64,${Buffer.from(post.imgPost).toString('base64')}`}
+                                alt={`Post ${post.id}`}
                                 className="w-full object-cover mb-4"
                             />
-                        ))}
 
                         <p className="text-gray-700">{post.description}</p>
                     </div>
