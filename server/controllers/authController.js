@@ -1,26 +1,35 @@
 const authModel = require('../models/authModel');
-const userModels = require('../models/userModel');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-function loginUser(req, res, next) {
-    authModel.loginUser(req.body, userModels.getUsers())
-        .then(({ client, token }) => {
-            if (!client || !token) {
-                console.error('Invalid login response from authModel:', { client, token });
-                throw new Error('Invalid login response from authModel');
-            }
-            // Set the token as a cookie in the response
-            res.cookie('accessToken', token, {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'Strict'
-            });
-            // Send the client object as a response
-            res.json(client)
-        })
-        .catch(err => {
-            console.error('Login error:', err);
-            res.status(500).json({ error: 'Login failed' });
+async function loginUser(req, res, next) {
+    try {
+        const {email, password} = req.body;
+        console.log('Email:', email);
+        console.log('Password:', password);
+        const user = await authModel.loginUser(email)
+        console.log('User:', user);
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        console.log('User Password:', user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        const token = jwt.sign({id: user.id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
+
+        res.cookie('accessToken', token, {
+            httpOnly: true,
+            secure: true
         });
+
+        res.json(user);
+    }
+    catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({ error: 'Login failed' });
+    }
 }
 
 
