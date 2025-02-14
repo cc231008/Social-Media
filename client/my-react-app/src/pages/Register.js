@@ -37,7 +37,6 @@ export default function Register() {
         });
 
         const data = await response.json(); // "data" contains information about the user that was registered.
-        console.log('User registered:', data);
         setUser(data); // "setUser" adds the user's information to the context in order to notify the application that the user is logged in.
 
 
@@ -136,14 +135,25 @@ export default function Register() {
                     <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
                         Avatar:
                     </label>
+                    <label className="w-full flex items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100">
+                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    {avatar ? (
+                        <span className="truncate">{avatar.name}</span>
+                    ) : (
+                        <span>Choose File</span>
+                    )}
                     <input
                         id="avatar"
                         type="file"
                         name="avatar"
                         accept="image/*"
                         onChange={handleAvatarChange} // Store selected file in state
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                        className="hidden"
                     />
+                    </label>
+
                 </div>
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700">

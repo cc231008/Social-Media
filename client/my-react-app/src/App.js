@@ -2,7 +2,7 @@
 import {Suspense} from "react";
 
 // "BrowserRouter" is a component that provides the routing functionality to the application. It helps to navigate between different pages of the application.
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 
 // This is the list of the pages that are being imported in the application.
 import Profile from "./pages/Profile";
@@ -36,7 +36,7 @@ export default function App() {
                         : null}
                         <div className="flex-1">
                 <Routes>
-                    <Route path="/" element={<Login />} />
+                    <Route path="/login" element={<Login />} />
 
                     <Route path="/register" element={<Register />} />
 
@@ -65,6 +65,7 @@ export default function App() {
                         <Uploads />
                             </ProtectedRoute>
                     } />
+                    <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
             </div>
                     </div>

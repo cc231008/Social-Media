@@ -1,16 +1,19 @@
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "./AuthContext";
 
 // This is a button that allows the user to delete his profile. It is used in the EditUser page.
 export default function DeleteUser({id}) { // This is the id of the user, which we pass as a prop, so we can delete the user with that id.
     const navigate = useNavigate();
+    const { setUser } = useAuth();
     async function handleDelete() {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${id}`, {
                 method: 'DELETE',
             });
-            const data = await response.json();
-            console.log(data);
-            navigate('/'); // Redirect to the login page.
+            if (response.ok) {
+                setUser(null);
+                navigate('/login'); // Redirect to the login page.
+            }
         } catch (error) {
             console.error("Error", error);
         }

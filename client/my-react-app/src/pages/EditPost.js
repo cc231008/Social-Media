@@ -22,10 +22,7 @@ export default function EditPost() {
             body: JSON.stringify({postId, userId: user.id, description, namePost}), // This is the data that is being sent to the server.
         });
 
-        const data = await response.json();
-        console.log('Added Post:', data);
-
-        navigate('/home'); // Redirect to the home page.
+        if (response.ok) navigate('/home'); // Redirect to the home page.
     }
     return (
         <div className="max-w-3xl mx-auto px-4 py-8">

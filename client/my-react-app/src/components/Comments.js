@@ -34,18 +34,16 @@ export default function Comments({ postId }) {
 
             const data = await response.json();
             setComments(data);
-            console.log('Comments:', data);
         }
         catch (error) {
             console.error('Fetch Comments Error:', error);
         }
     }, [postId]);
 
+
     useEffect(() => {
-        fetchComments();
-    }, [fetchComments]);
-
-
+        comments && fetchComments();
+    } , [comments, fetchComments]);
 
     // Function for Adding Comments
     const handleSubmit = async (e) => {
@@ -66,13 +64,8 @@ export default function Comments({ postId }) {
             body: JSON.stringify({ text: newComment, postId, userId: user.id }),
         });
             const data = await response.json();
-            console.log('Added Comment:', data);
-
-            // Add the username to the comment in order to display the username of the user who wrote the comment.
-            const newCommentWithUsername = { ...data, username: user.username };
-
             // Add the new comment to the existing list of comments.
-            setComments(prevComments => [...prevComments, newCommentWithUsername]);
+            setComments(data);
 
             // Clears the input field after the comment is added in order to allow the user to write a new comment from scratch.
             setNewComment('');
@@ -91,9 +84,9 @@ const handleDelete = async (commentId) => {
             credentials: 'include',
             body: JSON.stringify({ commentId }),
         });
-        const data = await response.json();
-        console.log('Deleted Comment:', data);
-        setComments(comments.filter((comment) => comment.id !== commentId));
+       if (response.ok) {
+           setComments(comments.filter((comment) => comment.id !== commentId));
+       }
     }
     catch (error) {
         console.error('Error deleting comment:', error);
@@ -115,16 +108,9 @@ const handleUpdate = async () => {
         });
 
         const data = await response.json();
-        console.log('Updated Comment:', data);
 
         // Takes the old list of comments and EDITS the existing comment to it.
-        setComments(prevComments =>
-            prevComments.map(comment => {
-                // if the id of the comment is the same as the id of the comment that is being edited, THEN THE COMMENT IS EDITED. Otherwise, the comment remains the same.
-                return comment.id === editCommentId ? { ...comment, text: editCommentText } : comment;
-            }
-            )
-        );
+        setComments(data);
 
         // RESETS the edit comment id and text after the comment is updated.
         setEditCommentId(null);

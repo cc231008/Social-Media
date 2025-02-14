@@ -41,8 +41,6 @@ export default function NewPost () {
             }
 
             const data = await response.json();
-            console.log(data);
-
             if (!data.imgPost) {
                 console.error('Image data not found in the response');
             }
@@ -63,20 +61,25 @@ export default function NewPost () {
             <h1 className="text-2xl font-bold mb-4">Add New Post</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="mb-4">
-                    <label htmlFor="imgPost" className="block text-sm font-medium text-gray-700 mb-1">
-                        Image Post:
-                    </label>
+                    <label className="w-full flex items-center justify-center px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100">
+                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        {image ? (
+                        <span className="truncate">{image.name}</span>
+                        ) : (
+                        <span>Choose File</span>
+                        )}
                     <input
                         id="imgPost"
                         type="file"
                         accept="image/*"
                         name="imgPost"
+                        className={'hidden'}
                         onChange={handleImageChange}
                     />
-
-                    <label htmlFor="imgPost" className="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg inline-block">
-                        Choose Image
                     </label>
+
                 </div>
                 <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">

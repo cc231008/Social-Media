@@ -2,19 +2,15 @@ import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { useAuth } from '../components/AuthContext';
 
-// This is the page where the user can login to his account using his email and password.
 export default function Login() {
     const { user, login } = useAuth(); // This is the logged in user.
-    // This is the state that stores the user's email and password.
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-
-    // Error or Success message created when login fails or succeeds to type right data for debugging purposes.
     const [message, setMessage] = useState('');
 
-    const navigate = useNavigate(); // This is a function that allows us to navigate to a different page.
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,8 +21,6 @@ export default function Login() {
             navigate(`/clients/${user.id}`);
         }
     }, [user, navigate]);
-
-    // This function is called when the user submits the form for logging in.
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();

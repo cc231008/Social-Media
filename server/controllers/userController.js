@@ -17,6 +17,8 @@ function getUser(req, res, next) {
         .catch(err => res.sendStatus(500))
 }
 
+
+
 // This function deletes a user from the database and sends a response.
 function deleteUser(req, res, next) {
     userModel.deleteUser(req.params.id)
@@ -25,17 +27,30 @@ function deleteUser(req, res, next) {
 }
 
 // This function edits a user in the database and sends a response.
-const editUser = (req, res, next) => {
+const editUser = async (req, res, next) => {
     const id = req.params.id;
     const { name, surname, email, username, bio } = req.body;
-    const avatar = req.file.buffer;
 
-    userModel.editUser(id, { name, surname, email, username, bio, avatar })
-        .then(result => {res.json(result)})
-        .catch(err => {
-            console.error('Error editing user:', err);
-            res.sendStatus(500);
-        });
+    let avatar
+    if (req.file) {
+        avatar = req.file.buffer;
+    } else {
+        try {
+            const result = await userModel.getAvatar(id);
+            avatar = result.avatar;
+        } catch (err) {
+            console.error('Error fetching avatar:', err);
+            return res.sendStatus(500);
+        }
+    }
+
+    try {
+        const result = await userModel.editUser(id, { name, surname, email, username, bio, avatar });
+        res.json(result);
+    } catch (err) {
+        console.error('Error editing user:', err);
+        res.sendStatus(500);
+    }
 };
 module.exports = {
     getUsers,

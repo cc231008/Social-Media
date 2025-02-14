@@ -22,7 +22,7 @@ export default function Home() {
             setPosts(data);
         }
         catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }, [setPosts])
     // Here, dependency array caches setPosts to avoid re-creating the function every time the component re-renders.

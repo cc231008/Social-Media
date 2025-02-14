@@ -35,6 +35,16 @@ let deleteUser = (id) => new Promise((resolve, reject)=>{
     })
 })
 
+let getAvatar = (id) => new Promise((resolve, reject) => {
+    db.query(`SELECT avatar FROM client WHERE id=${id}`, function (err, client, fields) {
+        if (err) {
+            reject(err)
+        } else {
+            resolve(client[0]);
+        }
+    })
+})
+
 // In this SQL query, we are updating the client table where the id is equal to the id that is passed as a parameter.
 const editUser = (id, userData) => new Promise((resolve, reject) => {
 
@@ -64,5 +74,6 @@ module.exports = {
     getUsers,
     getUser,
     deleteUser,
-    editUser
+    editUser,
+    getAvatar
 };

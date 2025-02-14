@@ -4,8 +4,6 @@ require('dotenv').config();
 function authenticateUser(req, res, next) {
     const token = req.cookies['accessToken'] // Get the token from the accessToken cookie
 
-    console.log('token', token);
-
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });
     }

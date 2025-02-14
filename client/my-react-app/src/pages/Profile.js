@@ -19,10 +19,9 @@ export default function Profile() {
             try {
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${id}`);
                 const result = await response.json();
-                console.log(result)
                 setClient(result);
             } catch (error) {
-                console.log(error)
+                console.error(error)
             }
         }
         getData();

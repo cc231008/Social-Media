@@ -50,7 +50,6 @@ export default function Likes({ postId }) {
             body: JSON.stringify({ userId: user.id, postId}), // This is the data that is being sent to the server.
         });
         const data = await response.json();
-        console.log('Added Like:', data);
         setLikes(data.likeCount); // This sets the number of likes that the post has.
         setLiked(!liked); // This toggles the liked state between true and false.
     }

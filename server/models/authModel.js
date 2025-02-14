@@ -15,7 +15,6 @@ let loginUser = (email) => new Promise(async (resolve, reject) => {
             if(clients.length === 0) {
                 return reject('User not found')
             }
-            console.log('Clients:', clients[0]);
             resolve(clients[0])
 })
 })

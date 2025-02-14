@@ -24,7 +24,6 @@ export default function EditUser() {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${id}`);
             const data = await response.json();
             setFormData(data);
-            console.log("Users are fetched:", data);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -65,11 +64,8 @@ export default function EditUser() {
                 console.error(`HTTP error! status: ${response.status}`);
             }
 
-            const data = await response.json();
 
-            console.log('User updated:', data);
-
-            navigate(`/clients/${id}`); // redirect user back to his profile page
+            if (response.ok) navigate(`/clients/${id}`); // redirect user back to his profile page
 
         } catch (error) {
             console.error('Error:', error);
@@ -172,14 +168,8 @@ export default function EditUser() {
                             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
-                            {
-                                // This part is for the image upload field. If the user has already uploaded an image, it will be displayed here.
-                            }
-                            {formData.avatar ? (
-                                <span className="truncate">{formData.avatar.name}</span>
-                            ) : (
-                                <span>Choose File</span>
-                            )}
+                            { /* if a user doesn't indicate a new avatar, then leave the old one */}
+
                             <input type="file" name="avatar" className="hidden" onChange={handleChange} accept="image/*" />
                         </label>
                     </div>

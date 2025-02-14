@@ -15,9 +15,7 @@ export default function DeletePost ({ postId }) {
             credentials: 'include',
             body: JSON.stringify({postId, userId: user.id}),
         });
-        const data = await response.json();
-        console.log('Deleted Post:', data);
-        navigate('/home'); // Redirect to the home page.
+        if (response.ok) navigate('/home'); // Redirect to the home page.
     }
 
     return (
