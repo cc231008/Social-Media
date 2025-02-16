@@ -1,12 +1,22 @@
-# CCL2 Social Media
+# Social Media (University Project)
 
 
+## Description 
+It's a social media web application that stores users' data in the database. Each user has an ability to edit data of his own profile and can post and comment on his behalf.
 
-## Getting started
+## Technologies Used
+### Backend:
+Node.js and Express.js were used for backend development. The project follows the **MVC (Model-View-Controller)** pattern, where:
+* Model handles data manipulation and interactions with the database.
+* Controller retrieves data from the Model and sends it to the View (React) in JSON format.
+* View (React) dynamically displays the fetched data on the frontend.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### Frontend:
+In this project, React is used for the frontend, where data is fetched from the backend via an API and displayed on the screen dynamically.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Goal
+This classic social media website serves to **let people express themselves** in the form of publishing new posts where they can share their thoughts and images with other users.
+
 
 ## Add your files
 
